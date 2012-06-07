@@ -10,8 +10,7 @@ import java.util.List;
  * pairs for export purposes.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 08-25-2010 16:10 EST
- * @version Modified date: 09-13-2010 16:45 EST
+ * @version 1.0.0
  */
 public final class WritableConfiguration extends Configuration {
 

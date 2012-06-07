@@ -7,8 +7,7 @@ package hemera.core.utility.enumn;
  * to retrieve the <code>String</code> value used.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 01-06-2010 10:41 EST
- * @version Modified date: 01-06-2010 10:47 EST
+ * @version 1.0.0
  */
 public enum EConfigTag {
 	/**

@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * single key and a set of values.
  *
  * @author Yi Wang (Neakor)
- * @version 1.4.0
+ * @version 1.0.0
  */
 public abstract class Configuration {
 	/**

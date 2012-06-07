@@ -33,8 +33,7 @@ package hemera.core.utility.structure.interfaces;
  * @param V The attachment for the node.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 11-21-2010 12:53 EST
- * @version Modified date: 11-22-2010 14:28 EST
+ * @version 1.0.0
  */
 public interface IConcurrentSortableSet<K, T extends Comparable<T>, V> {
 

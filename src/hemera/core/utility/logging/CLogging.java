@@ -1,21 +1,20 @@
-package hemera.core.utility.enumn;
+package hemera.core.utility.logging;
 
 /**
- * <code>ELoggingConfig</code> defines the enumeration
- * of logging related configuration values. All these
+ * <code>CLogging</code> defines the enumeration of
+ * logging related configuration values. All these
  * values can be modified at runtime to adjust system
  * logging behavior.
  * <p>
- * Each <code>ELoggingConfig</code> enumeration has an
- * <code>Object</code> value associated with it. This
- * value is of a type that is specific to the usage of
- * the enumeration.
+ * Each <code>CLogging</code> enumeration has a value
+ * <code>Object</code> associated with it. This value
+ * is of a type that is specific to the usage of the
+ * enumeration.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 08-08-2010 15:24 EST
- * @version Modified date: 08-13-2010 12:57 EST
+ * @version 1.0.0
  */
-public enum ELoggingConfig {
+public enum CLogging {
 	/**
 	 * The <code>Boolean</code> value indicating if the
 	 * system logging is enabled.
@@ -52,10 +51,10 @@ public enum ELoggingConfig {
 	private Object value;
 	
 	/**
-	 * Constructor of <code>ELoggingConfig</code>.
+	 * Constructor of <code>CLogging</code>.
 	 * @param value The default <code>Object</code> value.
 	 */
-	private ELoggingConfig(final Object value) {
+	private CLogging(final Object value) {
 		this.value = value;
 	}
 	

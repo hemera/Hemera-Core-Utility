@@ -14,8 +14,7 @@ import hemera.core.utility.logging.FileLogger;
  * to perform security related actions.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 09-07-2011 12:52 EST
- * @version Modified date: 11-12-2011 23:22 EST
+ * @version 1.0.0
  */
 public enum SecurityUtils {
 	/**

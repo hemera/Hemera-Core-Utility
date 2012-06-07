@@ -12,8 +12,7 @@ import java.net.ServerSocket;
  * high level of concurrency capabilities.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 02-17-2010 14:55 EST
- * @version Modified date: 06-23-2010 12:02 EST
+ * @version 1.0.0
  */
 public enum PortUtility {
 	/**

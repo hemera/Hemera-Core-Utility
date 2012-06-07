@@ -8,8 +8,7 @@ import java.util.concurrent.TimeUnit;
  * value in the specified <code>TimeUnit</code>.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 06-08-2010 16:51 EST
- * @version Modified date: 06-08-2010 16:53 EST
+ * @version 1.0.0
  */
 public final class TimeData {
 	/**

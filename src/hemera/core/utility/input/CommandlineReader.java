@@ -12,8 +12,7 @@ import hemera.core.utility.config.TimeData;
  * line reading functionalities.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 06-07-2010 12:17 EST
- * @version Modified date: 06-10-2010 12:06 EST
+ * @version 1.0.0
  */
 public final class CommandlineReader {
 	/**

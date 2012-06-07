@@ -14,8 +14,7 @@ import java.io.StreamTokenizer;
  * for parsing out all the tags within a XML file.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 11-06-2009 19:24 EST
- * @version Modified date: 09-14-2010 11:55 EST
+ * @version 1.0.0
  */
 public class XMLParser {
 	/**

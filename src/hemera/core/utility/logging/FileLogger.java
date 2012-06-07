@@ -9,8 +9,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
-import hemera.core.utility.enumn.ELoggingConfig;
-
 /**
  * <code>FileLogger</code> defines the implementation
  * of a configured <code>Logger</code> unit that is
@@ -25,14 +23,13 @@ import hemera.core.utility.enumn.ELoggingConfig;
  * <p>
  * <code>FileLogger</code> sets up the instances of
  * <code>Logger</code> based on the configuration in
- * <code>ELoggingConfig</code> and provides three-
- * level based logging methods. All provided logging
- * methods use <code>ELoggingConfig</code> values at
- * runtime for logging invocations.
+ * <code>CLogging</code> and provides three-level
+ * based logging methods. All provided logging methods
+ * use <code>CLogging</code> values at runtime for
+ * logging invocations.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 08-08-2010 18:09 EST
- * @version Modified date: 09-06-2010 22:12 EST
+ * @version 1.0.0
  */
 public final class FileLogger {
 	/**
@@ -74,48 +71,48 @@ public final class FileLogger {
 
 	/**
 	 * Log an info level message, if logging is enabled
-	 * at <code>ELoggingConfig.Enabled</code>.
+	 * at <code>CLogging.Enabled</code>.
 	 * @param message The <code>String</code> message
 	 * to be logged.
 	 */
 	public void info(final String message) {
-		final Boolean enabled = (Boolean)ELoggingConfig.Enabled.getValue();
+		final Boolean enabled = (Boolean)CLogging.Enabled.getValue();
 		if (!enabled) return;
 		this.logger.info(message);
 	}
 
 	/**
 	 * Log a warning level message, if logging is enabled
-	 * at <code>ELoggingConfig.Enabled</code>.
+	 * at <code>CLogging.Enabled</code>.
 	 * @param message The <code>String</code> message
 	 * to be logged.
 	 */
 	public void warning(final String message) {
-		final Boolean enabled = (Boolean)ELoggingConfig.Enabled.getValue();
+		final Boolean enabled = (Boolean)CLogging.Enabled.getValue();
 		if (!enabled) return;
 		this.logger.warning(message);
 	}
 
 	/**
 	 * Log a severe level message, if logging is enabled
-	 * at <code>ELoggingConfig.Enabled</code>.
+	 * at <code>CLogging.Enabled</code>.
 	 * @param message The <code>String</code> message
 	 * to be logged.
 	 */
 	public void severe(final String message) {
-		final Boolean enabled = (Boolean)ELoggingConfig.Enabled.getValue();
+		final Boolean enabled = (Boolean)CLogging.Enabled.getValue();
 		if (!enabled) return;
 		this.logger.severe(message);
 	}
 
 	/**
 	 * Log the given exception, if logging is enabled
-	 * at <code>ELoggingConfig.Enabled</code>.
+	 * at <code>CLogging.Enabled</code>.
 	 * @param exception The <code>Exception</code> to
 	 * be logged.
 	 */
 	public void exception(final Exception exception) {
-		final Boolean enabled = (Boolean)ELoggingConfig.Enabled.getValue();
+		final Boolean enabled = (Boolean)CLogging.Enabled.getValue();
 		if (!enabled) return;
 		final StringBuilder builder = new StringBuilder();
 		builder.append(exception.toString()).append("\n");
@@ -211,7 +208,7 @@ public final class FileLogger {
 	/**
 	 * Create a new file handler using the given name
 	 * as file pattern, based on configuration values
-	 * in <code>ELoggingConfig</code>.
+	 * in <code>CLogging</code>.
 	 * @param name The <code>String</code> name pattern
 	 * to be used for log files.
 	 * @return The <code>FileHandler</code> instance.
@@ -220,13 +217,13 @@ public final class FileLogger {
 	 */
 	private static FileHandler newFileHandler(final String name) throws SecurityException, IOException {
 		// Create a file handler based on logging configuration.
-		final String directory = (String)ELoggingConfig.Directory.getValue();
+		final String directory = (String)CLogging.Directory.getValue();
 		final StringBuilder pattern = new StringBuilder();
 		pattern.append(directory);
 		if (!directory.endsWith("/")) pattern.append("/");
 		pattern.append(name).append(".log");
-		final Integer filesize = (Integer)ELoggingConfig.FileSize.getValue();
-		final Integer filecount = (Integer)ELoggingConfig.FileCount.getValue();
+		final Integer filesize = (Integer)CLogging.FileSize.getValue();
+		final Integer filecount = (Integer)CLogging.FileCount.getValue();
 		final FileHandler handler = new FileHandler(pattern.toString(), filesize, filecount, false);
 		final LoggingFormatter formatter = new LoggingFormatter();
 		handler.setFormatter(formatter);

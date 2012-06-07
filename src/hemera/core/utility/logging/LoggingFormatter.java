@@ -9,8 +9,7 @@ import java.util.logging.LogRecord;
  * unit implementation that formats the log record.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 08-08-2010 15:29 EST
- * @version Modified date: 08-08-2010 15:34 EST
+ * @version 1.0.0
  */
 public class LoggingFormatter extends Formatter {
 

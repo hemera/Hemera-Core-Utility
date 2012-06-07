@@ -24,8 +24,7 @@ import hemera.core.utility.xml.XMLTag;
  * concurrently.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 01-05-2010 23:23 EST
- * @version Modified date: 08-25-2010 16:24 EST
+ * @version 1.0.0
  */
 public class ConfigImporter {
 

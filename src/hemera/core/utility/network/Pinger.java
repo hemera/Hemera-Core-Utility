@@ -14,8 +14,7 @@ import java.io.InputStreamReader;
  * process is terminated after the pinging.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 01-28-2010 11:01 EST
- * @version Modified date: 06-16-2010 01:47 EST
+ * @version 1.0.0
  */
 public class Pinger {
 	/**

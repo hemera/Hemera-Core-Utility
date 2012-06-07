@@ -18,8 +18,7 @@ import hemera.core.utility.structure.interfaces.IConcurrentSortableSet;
  * while fully conforming to its interface definition.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 11-20-2010 23:36 EST
- * @version Modified date: 11-22-2010 14:29 EST
+ * @version 1.0.0
  */
 public class ConcurrentSortableSet<K, T extends Comparable<T>, V> implements IConcurrentSortableSet<K, T, V> {
 	/**

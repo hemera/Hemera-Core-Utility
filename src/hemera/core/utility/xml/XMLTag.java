@@ -19,8 +19,7 @@ import java.util.Map.Entry;
  * slow depending the number of children tags.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 11-06-2009 19:04 EST
- * @version Modified date: 01-08-2010 11:44 EST
+ * @version 1.0.0
  */
 public class XMLTag {
 	/**

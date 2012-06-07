@@ -1,4 +1,4 @@
-package hemera.core.utility.network;
+package hemera.core.utility.codec;
 
 /**
  * <code>UnicodeUtils</code> defines a singleton unit
@@ -6,8 +6,7 @@ package hemera.core.utility.network;
  * parsing.
  *
  * @author Yi Wang (Neakor)
- * @version Creation date: 10-08-2011 02:16 EST
- * @version Modified date: 10-08-2011 20:49 EST
+ * @version 1.0.0
  */
 public enum UnicodeUtils {
 	/**
