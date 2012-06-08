@@ -11,7 +11,7 @@ import java.util.logging.LogRecord;
  * @author Yi Wang (Neakor)
  * @version 1.0.0
  */
-public class LoggingFormatter extends Formatter {
+class LoggingFormatter extends Formatter {
 
 	@Override
 	@SuppressWarnings("deprecation")
