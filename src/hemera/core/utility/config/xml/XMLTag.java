@@ -1,4 +1,4 @@
-package hemera.core.utility.xml;
+package hemera.core.utility.config.xml;
 
 import java.util.ArrayList;
 import java.util.HashMap;

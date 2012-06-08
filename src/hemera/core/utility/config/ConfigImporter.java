@@ -5,9 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import hemera.core.utility.config.xml.XMLParser;
+import hemera.core.utility.config.xml.XMLTag;
 import hemera.core.utility.enumn.EConfigTag;
-import hemera.core.utility.xml.XMLParser;
-import hemera.core.utility.xml.XMLTag;
 
 /**
  * <code>ConfigImporter</code> defines implementation

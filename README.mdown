@@ -2,7 +2,7 @@
 
 Created by **Yi Wang (hemera)**
 
-**Hemera Engine** TODO
+**Hemera Engine - Core Utility** TODO
 
 # Documentation
 TODO

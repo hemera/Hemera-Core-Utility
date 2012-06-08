@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import hemera.core.utility.config.xml.XMLTag;
 import hemera.core.utility.enumn.EConfigTag;
-import hemera.core.utility.xml.XMLTag;
 
 /**
  * <code>ConfigExporter</code> defines implementation
@@ -35,13 +35,13 @@ public class ConfigExporter {
 	 * <p>
 	 * This method only operates on local variables,
 	 * making is thread-safe by nature.
-	 * @param config The <code>WritableConfiguration</code>
+	 * @param config The <code>Configuration</code>
 	 * containing the data to be exported.
 	 * @param file The <code>File</code> to save the
 	 * data into.
 	 * @throws IOException If file handling failed.
 	 */
-	public void export(final WritableConfiguration config, final File file) throws IOException {
+	public void export(final Configuration config, final File file) throws IOException {
 		// Check file.
 		if(file.exists()) file.delete();
 		file.createNewFile();
