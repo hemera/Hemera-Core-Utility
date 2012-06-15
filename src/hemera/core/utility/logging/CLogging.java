@@ -26,9 +26,9 @@ public enum CLogging {
 	 * The <code>String</code> value indicating the
 	 * logging file directory.
 	 * <p>
-	 * Default value is <code>/nyx/log/</code>.
+	 * Default value is <code>/hemera/log/</code>.
 	 */
-	Directory("/nyx/log/"),
+	Directory("/hemera/log/"),
 	/**
 	 * The <code>Integer</code> value indicating the
 	 * maximum size of a single log file before a new
