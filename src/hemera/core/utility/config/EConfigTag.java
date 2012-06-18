@@ -1,4 +1,4 @@
-package hemera.core.utility.enumn;
+package hemera.core.utility.config;
 
 /**
  * <code>EConfigTag</code> defines the enumerations

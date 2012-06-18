@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import hemera.core.utility.config.xml.XMLTag;
-import hemera.core.utility.enumn.EConfigTag;
 
 /**
  * <code>ConfigExporter</code> defines implementation

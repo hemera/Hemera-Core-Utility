@@ -7,7 +7,6 @@ import java.io.InputStream;
 
 import hemera.core.utility.config.xml.XMLParser;
 import hemera.core.utility.config.xml.XMLTag;
-import hemera.core.utility.enumn.EConfigTag;
 
 /**
  * <code>ConfigImporter</code> defines implementation
