@@ -11,19 +11,19 @@ import junit.framework.TestCase;
 public class TestURIParser extends TestCase {
 
 	public void testNoArguments() throws Exception {
-		final String uri = "http://myapi.myserver.com/module/submodule/processor";
-		final Map<String, String> arguments = URIParser.instance.parse(uri);
+		final String uri = "/module/submodule/processor";
+		final Map<String, String> arguments = URIParser.instance.parseArguments(uri);
 		assertEquals(null, arguments);
 	}
 	
 	public void testInvalidArguments() throws Exception {
-		final String uri = "http://myapi.myserver.com/module/submodule/processor?";
-		final Map<String, String> arguments = URIParser.instance.parse(uri);
+		final String uri = "/module/submodule/processor?";
+		final Map<String, String> arguments = URIParser.instance.parseArguments(uri);
 		assertEquals(null, arguments);
 	}
 	
 	public void testHasArguments() throws Exception {
-		String uri = "http://myapi.myserver.com/module/submodule/processor?";
+		String uri = "/module/submodule/processor?";
 		final Random random = new Random();
 		final Map<String, String> expected = new HashMap<String, String>();
 		final int count = 17;
@@ -35,12 +35,32 @@ public class TestURIParser extends TestCase {
 			if (i != count-1) uri += "&";
 		}
 		
-		final Map<String, String> arguments = URIParser.instance.parse(uri);
+		final Map<String, String> arguments = URIParser.instance.parseArguments(uri);
 		final Iterable<String> keys = arguments.keySet();
 		for (final String key : keys) {
 			final String value = arguments.get(key);
 			final String expectedvalue = expected.get(key);
 			assertEquals(expectedvalue, value);
 		}
+	}
+	
+	public void testPathNoArguments() {
+		final String uri = "/module/submodule/processor";
+		final String path = URIParser.instance.parsePath(uri);
+		assertEquals(uri, path);
+	}
+	
+	public void testPathWithArguments() {
+		final String expected = "/module/submodule/processor";
+		final String uri = expected + "?arg1=1&arg2=2";
+		final String path = URIParser.instance.parsePath(uri);
+		assertEquals(expected, path);
+	}
+	
+	public void testPathInvalidArguments() {
+		final String base = "/module/submodule/processor";
+		final String uri = base + "arg1=1&arg2=2";
+		final String path = URIParser.instance.parsePath(uri);
+		assertEquals(uri, path);
 	}
 }

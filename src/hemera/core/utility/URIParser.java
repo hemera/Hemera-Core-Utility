@@ -19,6 +19,22 @@ public enum URIParser {
 	instance;
 	
 	/**
+	 * Parse out the access path of the given URI.
+	 * @param uri The <code>String</code> URI to be
+	 * parsed. This is not to be confused with an
+	 * URL. It should not contain the domain portion
+	 * of the address, but starts and includes the
+	 * first <code>/</code> of the address.
+	 * @return The <code>String</code> access path
+	 * without any arguments.
+	 */
+	public String parsePath(final String uri) {
+		final int index = uri.indexOf("?");
+		if (index < 0) return uri;
+		return uri.substring(0, index);
+	}
+	
+	/**
 	 * Parse the given URI string into a map of key
 	 * value <code>String</code> pairs.
 	 * <p>
@@ -28,11 +44,14 @@ public enum URIParser {
 	 * the format of <code>key=value</code>, and all
 	 * pairs are separated by <code>&</code> character.
 	 * @param uri The <code>String</code> URI to be
-	 * parsed.
+	 * parsed. This is not to be confused with an
+	 * URL. It should not contain the domain portion
+	 * of the address, but starts and includes the
+	 * first <code>/</code> of the address.
 	 * @return The <code>Map</code> of arguments in
 	 * the URI. <code>null</code> if there are none.
 	 */
-	public Map<String, String> parse(final String uri) {
+	public Map<String, String> parseArguments(final String uri) {
 		// No arguments.
 		final int index = uri.indexOf("?");
 		if (index < 0) return null;
