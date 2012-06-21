@@ -12,13 +12,13 @@ public class TestURIParser extends TestCase {
 
 	public void testNoArguments() throws Exception {
 		final String uri = "/module/submodule/processor";
-		final Map<String, String> arguments = URIParser.instance.parseArguments(uri);
+		final Map<String, String> arguments = URIParser.instance.parseURIArguments(uri);
 		assertEquals(null, arguments);
 	}
 	
 	public void testInvalidArguments() throws Exception {
 		final String uri = "/module/submodule/processor?";
-		final Map<String, String> arguments = URIParser.instance.parseArguments(uri);
+		final Map<String, String> arguments = URIParser.instance.parseURIArguments(uri);
 		assertEquals(null, arguments);
 	}
 	
@@ -35,7 +35,7 @@ public class TestURIParser extends TestCase {
 			if (i != count-1) uri += "&";
 		}
 		
-		final Map<String, String> arguments = URIParser.instance.parseArguments(uri);
+		final Map<String, String> arguments = URIParser.instance.parseURIArguments(uri);
 		final Iterable<String> keys = arguments.keySet();
 		for (final String key : keys) {
 			final String value = arguments.get(key);

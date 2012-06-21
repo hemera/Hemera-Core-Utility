@@ -51,19 +51,44 @@ public enum URIParser {
 	 * @return The <code>Map</code> of arguments in
 	 * the URI. <code>null</code> if there are none.
 	 */
-	public Map<String, String> parseArguments(final String uri) {
+	public Map<String, String> parseURIArguments(final String uri) {
 		// No arguments.
 		final int index = uri.indexOf("?");
 		if (index < 0) return null;
-		// Parse.
-		final String contentstr = uri.substring(index+1);
+		// Parse contents.
+		final String uricontents = uri.substring(index+1);
+		return this.parseURIContentsArguments(uricontents);
+	}
+	
+	/**
+	 * Parse the given URI contents string into a map
+	 * of key value <code>String</code> pairs.
+	 * <p>
+	 * This method uses the standard separators. Each
+	 * key value pair is in the format of
+	 * <code>key=value</code>, with a separator of the
+	 * <code>=</code> character. All key and valur
+	 * pairs are separated by a single <code>&</code>
+	 * character.
+	 * @param uricontents The <code>String</code> URI
+	 * contents to be parsed. This should only be the
+	 * contents portion of a URI or URL. The contents
+	 * portion of a URI or URL starts after the
+	 * <code>?</code> character.
+	 * @return The <code>Map</code> of arguments in
+	 * the URI. <code>null</code> if there are none.
+	 */
+	public Map<String, String> parseURIContentsArguments(final String uricontents) {
+		// Minimum must have a equals sign, a key and a value.
+		if (uricontents.length() < 3) return null;
 		final Map<String, String> arguments = new HashMap<String, String>();
 		// Separate argument pairs.
-		final StringTokenizer pairtokenizer = new StringTokenizer(contentstr, "&");
+		final StringTokenizer pairtokenizer = new StringTokenizer(uricontents, "&");
 		while (pairtokenizer.hasMoreTokens()) {
 			final String pair = pairtokenizer.nextToken();
 			// Separate key and value.
 			final int pairindex = pair.indexOf("=");
+			if (pairindex < 0) continue;
 			final String key = pair.substring(0, pairindex);
 			final String value = pair.substring(pairindex+1);
 			arguments.put(key, value);
