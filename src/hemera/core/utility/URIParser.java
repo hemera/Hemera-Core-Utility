@@ -1,5 +1,7 @@
 package hemera.core.utility;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -50,8 +52,10 @@ public enum URIParser {
 	 * first <code>/</code> of the address.
 	 * @return The <code>Map</code> of arguments in
 	 * the URI. <code>null</code> if there are none.
+	 * @throws UnsupportedEncodingException If UTF-8
+	 * URL decoding is not supported. 
 	 */
-	public Map<String, String> parseURIArguments(final String uri) {
+	public Map<String, String> parseURIArguments(final String uri) throws UnsupportedEncodingException {
 		// No arguments.
 		final int index = uri.indexOf("?");
 		if (index < 0) return null;
@@ -77,8 +81,10 @@ public enum URIParser {
 	 * <code>?</code> character.
 	 * @return The <code>Map</code> of arguments in
 	 * the URI. <code>null</code> if there are none.
+	 * @throws UnsupportedEncodingException If UTF-8
+	 * URL decoding is not supported.
 	 */
-	public Map<String, String> parseURIContentsArguments(final String uricontents) {
+	public Map<String, String> parseURIContentsArguments(final String uricontents) throws UnsupportedEncodingException {
 		// Minimum must have a equals sign, a key and a value.
 		if (uricontents.length() < 3) return null;
 		final Map<String, String> arguments = new HashMap<String, String>();
@@ -91,7 +97,9 @@ public enum URIParser {
 			if (pairindex < 0) continue;
 			final String key = pair.substring(0, pairindex);
 			final String value = pair.substring(pairindex+1);
-			arguments.put(key, value);
+			final String decodedkey = URLDecoder.decode(key, "UTF-8");
+			final String decodedvalue = URLDecoder.decode(value, "UTF-8");
+			arguments.put(decodedkey, decodedvalue);
 		}
 		// Catch empty arguments.
 		if (arguments.isEmpty()) return null;
