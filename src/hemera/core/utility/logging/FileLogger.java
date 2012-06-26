@@ -1,5 +1,6 @@
 package hemera.core.utility.logging;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -220,7 +221,7 @@ public final class FileLogger {
 		final String directory = (String)CLogging.Directory.getValue();
 		final StringBuilder pattern = new StringBuilder();
 		pattern.append(directory);
-		if (!directory.endsWith("/")) pattern.append("/");
+		if (!directory.endsWith(File.separator)) pattern.append(File.separator);
 		pattern.append(name).append(".log");
 		final Integer filesize = (Integer)CLogging.FileSize.getValue();
 		final Integer filecount = (Integer)CLogging.FileCount.getValue();

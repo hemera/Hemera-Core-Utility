@@ -1,5 +1,7 @@
 package hemera.core.utility.logging;
 
+import java.io.File;
+
 /**
  * <code>CLogging</code> defines the enumeration of
  * logging related configuration values. All these
@@ -28,7 +30,7 @@ public enum CLogging {
 	 * <p>
 	 * Default value is <code>/hemera/log/</code>.
 	 */
-	Directory("/hemera/log/"),
+	Directory(File.separator + "hemera" + File.separator + "log" + File.separator),
 	/**
 	 * The <code>Integer</code> value indicating the
 	 * maximum size of a single log file before a new
