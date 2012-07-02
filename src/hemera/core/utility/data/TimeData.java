@@ -1,4 +1,4 @@
-package hemera.core.utility.config;
+package hemera.core.utility.data;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,10 +23,21 @@ public final class TimeData {
 	
 	/**
 	 * Constructor of <code>TimeData</code>.
+	 * @param value The <code>String</code> value to
+	 * parse.
+	 */
+	public TimeData(final String value) {
+		final String[] array = value.split(" ");
+		this.value = Long.valueOf(array[0]);
+		this.unit = TimeUnit.valueOf(array[1]);
+	}
+	
+	/**
+	 * Constructor of <code>TimeData</code>.
 	 * @param value The <code>long</code> time value
 	 * in the time unit.
-	 * @param unit The <code>TimeUnit</code> the
-	 * value is in.
+	 * @param unit The <code>TimeUnit</code> the value
+	 * is in.
 	 */
 	public TimeData(final long value, final TimeUnit unit) {
 		this.value = value;

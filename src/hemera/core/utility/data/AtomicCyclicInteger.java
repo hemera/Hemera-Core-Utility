@@ -1,4 +1,4 @@
-package hemera.core.utility;
+package hemera.core.utility.data;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

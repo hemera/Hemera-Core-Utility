@@ -1,6 +1,6 @@
 package hemera.utility.test;
 
-import hemera.core.utility.AtomicCyclicInteger;
+import hemera.core.utility.data.AtomicCyclicInteger;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
