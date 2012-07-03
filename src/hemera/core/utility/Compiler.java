@@ -1,6 +1,5 @@
 package hemera.core.utility;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,35 +28,29 @@ public class Compiler {
 	 * directory including all of its sub-directories
 	 * with all the Jar files in the library directory
 	 * including all of its sub-directories as compiling
-	 * class-path into given build directory.
+	 * class-path into given build directory. The build
+	 * directory will preserve the package structure of
+	 * the source directory.
 	 * @param srcDir The <code>String</code> root source
 	 * files directory.
 	 * @param libDir The <code>String</code> root library
 	 * Jar files directory.
 	 * @param buildDir The <code>String</code> directory
 	 * to put all compiled class files.
-	 * @return The <code>List</code> of all the compiled
-	 * class files.
 	 * @throws Exception If any compilation error occurred.
 	 */
-	public List<File> compile(final String srcDir, final String libDir, final String buildDir) throws Exception {
+	public void compile(final String srcDir, final String libDir, final String buildDir) throws Exception {
 		// Retrieve all Java files.
 		final List<File> sourcefiles = FileUtils.instance.getFiles(srcDir, ".java");
-		if (sourcefiles == null || sourcefiles.isEmpty()) return null;
-		final int size = sourcefiles.size();
-		final File[] sourcearray = new File[size];
-		for (int i = 0; i < size; i++) sourcearray[i] = sourcefiles.get(i);
+		if (sourcefiles == null || sourcefiles.isEmpty()) return;
 		// Create the compiler.
 		final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 		final StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, null, null);
-		final Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjects(sourcearray);
-		// Create temporary build directory.
-		FileUtils.instance.delete(buildDir);
-		final File buildDirFile = new File(buildDir);
-		buildDirFile.mkdirs();
+		final Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromFiles(sourcefiles);
 		// Create task with compiler options.
-		final List<String> options = this.getCompileOptions(libDir, buildDir);
+		// Class files are left at the where the corresponding source files are.
+		final List<String> options = this.getCompileOptions(libDir);
 		final CompilationTask task = compiler.getTask(null, fileManager, diagnostics, options, null, compilationUnits);
 		final boolean succeeded = task.call();
 		fileManager.close();
@@ -71,8 +64,13 @@ public class Compiler {
 			}
 			throw new RuntimeException(builder.toString());
 		}
-		// Retrieve all the compiled class files from build directory.
-		return FileUtils.instance.getFiles(buildDir, ".class");
+		// Copy the source directory which will include all the class and source
+		// files in the proper package structure, but only include class files.
+		FileUtils.instance.copyFolder(srcDir, buildDir, ".class");
+		// Remove all class files from the source directory.
+		final List<File> classfiles = FileUtils.instance.getFiles(srcDir, ".class");
+		final int size = classfiles.size();
+		for (int i = 0; i < size; i++) classfiles.get(i).delete();
 	}
 	
 	/**
@@ -80,12 +78,10 @@ public class Compiler {
 	 * directory options.
 	 * @param libDir The <code>String</code> library
 	 * path to search for all class-path Jar files.
-	 * @param buildDir The <code>String</code> build
-	 * destination directory.
 	 * @return The <code>List</code> of compile option
 	 * <code>String</code> values.
 	 */
-	private List<String> getCompileOptions(final String libDir, final String buildDir) {
+	private List<String> getCompileOptions(final String libDir) {
 		final List<String> options = new ArrayList<String>();
 		// Search for all Jar files within the library directory.
 		final List<File> libFiles = FileUtils.instance.getFiles(libDir, ".jar");
@@ -100,9 +96,6 @@ public class Compiler {
 			if (i != last) builder.append(":");
 		}
 		options.add(builder.toString());
-		// Destination option.
-		options.add("-d");
-		options.add(buildDir);
 		return options;
 	}
 }

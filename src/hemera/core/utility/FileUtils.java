@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,52 @@ public enum FileUtils {
 	}
 
 	/**
+	 * Copy the contents and the structure of the source
+	 * directory to the target location only including
+	 * the files with specified extension.
+	 * @param srcPath The <code>String</code> path to
+	 * the source to be copied.
+	 * @param targetPath The <code>String</code> path to
+	 * the target to copy to.
+	 * @param extension The <code>String</code> extension
+	 * to check. <code>null</code> if all files should be
+	 * included.
+	 * @throws IOException If file processing failed.
+	 */
+	public void copyFolder(final String srcPath, final String targetPath, final String extension) throws IOException{
+		final File src = new File(srcPath);
+		final File target = new File(targetPath);
+		// If source is a directory iterate all of the contents.
+		if (src.isDirectory()){
+			if (!target.exists()) target.mkdirs();
+			final String files[] = src.list();
+			for (int i = 0; i < files.length; i++) {
+				final File srcFile = new File(src, files[i]);
+				final File destFile = new File(target, files[i]);
+				this.copyFolder(srcFile.getAbsolutePath(), destFile.getAbsolutePath(), extension);
+			}
+		}
+		// If source is a file, copy the file.
+		else {
+			// Check extension.
+			final String validExtension = this.getValidExtension(extension);
+			final String srcName = src.getName();
+			if (!srcName.toLowerCase().endsWith(validExtension)) return;
+			// Copy.
+			final InputStream input = new FileInputStream(src);
+			final OutputStream output = new FileOutputStream(target); 
+			final byte[] buffer = new byte[1024];
+			while (true) {
+				final int count = input.read(buffer);
+				if (count <= 0) break;
+				else output.write(buffer, 0, count);
+			}
+			input.close();
+			output.close();
+		}
+	}
+
+	/**
 	 * Read the contents of the file as a single string
 	 * value.
 	 * @param file The <code>File</code> to read.
@@ -95,7 +142,7 @@ public enum FileUtils {
 		}
 		return builder.toString();
 	}
-	
+
 	/**
 	 * Read the given file and parse it into a XML
 	 * document.
@@ -109,7 +156,7 @@ public enum FileUtils {
 	public Document readAsDocument(final File file) throws IOException, SAXException, ParserConfigurationException {
 		return this.readAsDocument(new FileInputStream(file));
 	}
-	
+
 	/**
 	 * Read the given input stream and parse it into
 	 * a XML document.
@@ -342,7 +389,14 @@ public enum FileUtils {
 			final int size = files.size();
 			for (int i = 0; i < size; i++) {
 				final File file = files.get(i);
-				this.writeJarEntry(file, output);
+				// Extract the initial path to exclude from the Jar structure.
+				String filePath = null;
+				if (file.isDirectory()) filePath = FileUtils.instance.getValidDir(file.getAbsolutePath());
+				else filePath = file.getAbsolutePath();
+				final int index = filePath.lastIndexOf("/")+1;
+				final String initPath = filePath.substring(0, index);
+				// Write entry.
+				this.writeJarEntry(file, output, initPath);
 			}
 		} finally {
 			if (output != null) output.close();
@@ -357,30 +411,45 @@ public enum FileUtils {
 	 * written as a Jar entry into the given target.
 	 * @param target The <code>JarOutputStream</code>
 	 * to write to.
+	 * @param initPath The initial path to exclude from
+	 * the directory structure within the Jar.
 	 * @throws IOException If any file processing failed.
 	 */
-	private void writeJarEntry(final File source, final JarOutputStream target) throws IOException {
-		// Source file must exist and cannot be a directory.
-		if (source.isDirectory() || !source.exists()) {
-			throw new IllegalArgumentException("Jar file entry does not exist or is a directory: " + source.getAbsolutePath());
-		}
-		// Create the Jar entry.
-		final JarEntry entry = new JarEntry(source.getName());
-		entry.setTime(source.lastModified());
-		target.putNextEntry(entry);
-		// Read from the source file and write into the target Jar stream.
-		BufferedInputStream input = null;
-		try {
-			input = new BufferedInputStream(new FileInputStream(source));
-			final byte[] buffer = new byte[1024];
-			while (true) {
-				final int count = input.read(buffer);
-				if (count == -1) break;
-				else target.write(buffer, 0, count);
+	private void writeJarEntry(final File source, final JarOutputStream target, final String initPath) throws IOException {
+		if (source.isDirectory()) {
+			// Use explicit slash here since this is within Jar.
+			final String sourcePath = FileUtils.instance.getValidDir(source.getAbsolutePath());
+			String sourceName = sourcePath.replace(initPath, "").replace("\\", "/");
+			if (!sourceName.isEmpty()) {
+				if (!sourceName.endsWith("/")) sourceName += "/";
+				final JarEntry entry = new JarEntry(sourceName);
+				entry.setTime(source.lastModified());
+				target.putNextEntry(entry);
+				target.closeEntry();
 			}
-			target.closeEntry();
-		} finally {
-			if (input != null) input.close();
+			// Write children.
+			final File[] children = source.listFiles();
+			for (int i = 0; i < children.length; i++) {
+				this.writeJarEntry(children[i], target, initPath);
+			}
+		} else {
+			BufferedInputStream input = null;
+			try {
+				// Write the file contents.
+				final JarEntry entry = new JarEntry(source.getAbsolutePath().replace(initPath, "").replace("\\", "/"));
+				entry.setTime(source.lastModified());
+				target.putNextEntry(entry);
+				input = new BufferedInputStream(new FileInputStream(source));
+				final byte[] buffer = new byte[1024];
+				while (true) {
+					final int count = input.read(buffer);
+					if (count <= 0) break;
+					else target.write(buffer, 0, count);
+				}
+				target.closeEntry();
+			} finally {
+				if (input != null) input.close();
+			}
 		}
 	}
 
@@ -456,7 +525,7 @@ public enum FileUtils {
 	 * are none.
 	 */
 	public List<File> getFiles(final String rootDir, final String extension) {
-		final String validExtension = (extension==null||extension.startsWith(".")) ? extension : "."+extension;
+		final String validExtension = this.getValidExtension(extension);
 		// Check root directory is a directory.
 		final File root = new File(rootDir);
 		if (!root.isDirectory()) return null;
@@ -472,9 +541,27 @@ public enum FileUtils {
 			} else {
 				// Check extension.
 				if (extension == null) files.add(file);
-				else if (file.getAbsolutePath().endsWith(validExtension)) files.add(file);
+				else if (file.getAbsolutePath().toLowerCase().endsWith(validExtension)) files.add(file);
 			}
 		}
 		return files;
+	}
+
+	/**
+	 * Retrieve the valid extension including the dot
+	 * separator.
+	 * @param extension The <code>String</code> value
+	 * to parse.
+	 * @return The <code>String</code> valid extension.
+	 * This value is never <code>null</code>. If the
+	 * given value is <code>null</code>, then an empty
+	 * string is returned.
+	 */
+	public String getValidExtension(final String extension) {
+		if (extension == null) return "";
+		else {
+			if (extension.startsWith(".")) return extension.toLowerCase();
+			else return "."+extension.toLowerCase();
+		}
 	}
 }
