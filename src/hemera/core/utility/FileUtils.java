@@ -104,7 +104,7 @@ public enum FileUtils {
 			// Copy.
 			final InputStream input = new FileInputStream(src);
 			final OutputStream output = new FileOutputStream(target); 
-			final byte[] buffer = new byte[1024];
+			final byte[] buffer = new byte[8192];
 			while (true) {
 				final int count = input.read(buffer);
 				if (count <= 0) break;
@@ -306,7 +306,7 @@ public enum FileUtils {
 		try {
 			output = new FileOutputStream(target);
 			input = jar.getInputStream(entry);
-			final byte[] buffer = new byte[1024];
+			final byte[] buffer = new byte[8192];
 			while (true) {
 				final int count = input.read(buffer);
 				if (count <= 0) break;
@@ -440,7 +440,7 @@ public enum FileUtils {
 				entry.setTime(source.lastModified());
 				target.putNextEntry(entry);
 				input = new BufferedInputStream(new FileInputStream(source));
-				final byte[] buffer = new byte[1024];
+				final byte[] buffer = new byte[8192];
 				while (true) {
 					final int count = input.read(buffer);
 					if (count <= 0) break;
