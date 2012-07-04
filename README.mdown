@@ -1,11 +1,16 @@
-# Hemera Engine - Core Utility
+# Hemera
+Created by **Yi Wang (Neakor)**
 
-Created by **Yi Wang (hemera)**
+**Please note that this is one of the building blocks of the Hemera
+Application Platform. Please refer to [Hemera-Release](https://github.com/hemera/Hemera-Release)
+for the complete stable releases and [documentation](https://github.com/hemera/Hemera-Release/wiki).**
 
-**Hemera Engine - Core Utility** TODO
+# Hemera - Core Utility
 
-# Documentation
-TODO
+**Hemera - Core Utility** defines the utility package directly used by
+the other core projects. It contains a set of units that provide
+convenient access to various functionalities such as shell command
+execution, file-based logging and etc.
 
 # License
 
