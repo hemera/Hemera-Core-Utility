@@ -28,9 +28,9 @@ public enum CLogging {
 	 * The <code>String</code> value indicating the
 	 * logging file directory.
 	 * <p>
-	 * Default value is <code>/hemera/log/</code>.
+	 * Default value is <code>/opt/hemera/log/</code>.
 	 */
-	Directory(File.separator + "hemera" + File.separator + "log" + File.separator),
+	Directory(File.separator + "opt" + File.separator + "hemera" + File.separator + "log" + File.separator),
 	/**
 	 * The <code>Integer</code> value indicating the
 	 * maximum size of a single log file before a new
