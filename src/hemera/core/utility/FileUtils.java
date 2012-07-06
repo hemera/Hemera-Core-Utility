@@ -59,6 +59,7 @@ public enum FileUtils {
 	 */
 	public boolean delete(final String target) {
 		final File file = new File(target);
+		if (!file.exists()) return false;
 		if (file.isDirectory()) {
 			final String[] children = file.list();
 			for (int i = 0; i < children.length; i++) {
