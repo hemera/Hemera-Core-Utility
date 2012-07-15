@@ -69,6 +69,27 @@ public enum FileUtils {
 		}
 		return file.delete();
 	}
+	
+	/**
+	 * Copy the source file to the target file.
+	 * @param src The source <code>File</code> to copy.
+	 * @param target The target <code>File</code> to
+	 * copy to. This is not the target directory, but
+	 * the actual file.
+	 * @throws IOException If copying file failed.
+	 */
+	public void copyFile(final File src, final File target) throws IOException {
+		final InputStream input = new FileInputStream(src);
+		final OutputStream output = new FileOutputStream(target); 
+		final byte[] buffer = new byte[8192];
+		while (true) {
+			final int count = input.read(buffer);
+			if (count <= 0) break;
+			else output.write(buffer, 0, count);
+		}
+		input.close();
+		output.close();
+	}
 
 	/**
 	 * Copy the contents and the structure of the source
@@ -103,16 +124,7 @@ public enum FileUtils {
 			final String srcName = src.getName();
 			if (!srcName.toLowerCase().endsWith(validExtension)) return;
 			// Copy.
-			final InputStream input = new FileInputStream(src);
-			final OutputStream output = new FileOutputStream(target); 
-			final byte[] buffer = new byte[8192];
-			while (true) {
-				final int count = input.read(buffer);
-				if (count <= 0) break;
-				else output.write(buffer, 0, count);
-			}
-			input.close();
-			output.close();
+			this.copyFile(src, target);
 		}
 	}
 
