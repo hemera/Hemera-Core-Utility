@@ -549,7 +549,7 @@ public enum FileUtils {
 			final File file = list[i];
 			// Recursive.
 			if (file.isDirectory()) {
-				final List<File> results = this.getFiles(file.getAbsolutePath(), validExtension);
+				final List<File> results = this.getFiles(file.getAbsolutePath(), extension);
 				files.addAll(results);
 			} else {
 				// Check extension.
@@ -571,7 +571,7 @@ public enum FileUtils {
 	 * string is returned.
 	 */
 	public String getValidExtension(final String extension) {
-		if (extension == null) return "";
+		if (extension == null || extension.trim().isEmpty()) return "";
 		else {
 			if (extension.startsWith(".")) return extension.toLowerCase();
 			else return "."+extension.toLowerCase();
