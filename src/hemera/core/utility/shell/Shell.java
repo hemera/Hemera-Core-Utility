@@ -1,8 +1,8 @@
 package hemera.core.utility.shell;
 
-import java.io.BufferedReader;
+import hemera.core.utility.FileUtils;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * <code>Shell</code> defines the singleton utility
@@ -28,15 +28,12 @@ public enum Shell {
 	 */
 	public ShellResult execute(final String command) throws IOException, InterruptedException {
 		final Process process = Runtime.getRuntime().exec(command);
-		final BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		final StringBuilder output = new StringBuilder();
-		String line = input.readLine();
-		while (line != null) {
-			output.append(line).append("\n");
-		}
-		input.close();
+		final String output = FileUtils.instance.readAsString(process.getInputStream());
+		final String error = FileUtils.instance.readAsString(process.getErrorStream());
+		final StringBuilder builder = new StringBuilder();
+		builder.append(output).append("\n").append(error);
 		final int code = process.waitFor();
-		return new ShellResult(code, output.toString());
+		return new ShellResult(code, builder.toString());
 	}
 	
 	/**

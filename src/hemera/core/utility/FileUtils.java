@@ -10,7 +10,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -137,10 +139,20 @@ public enum FileUtils {
 	 * @throws IOException If any file processing failed.
 	 */
 	public String readAsString(final File file) throws IOException {
+		return this.readAsString(new FileReader(file));
+	}
+	
+	/**
+	 * Read the contents of the given reader as a string.
+	 * @param reader The <code>Reader</code> to read.
+	 * @return The <code>String</code> contents.
+	 * @throws IOException If any reading failed.
+	 */
+	public String readAsString(final Reader reader) throws IOException {
 		BufferedReader input = null;
 		final StringBuilder builder = new StringBuilder();
 		try {
-			input = new BufferedReader(new FileReader(file));
+			input = new BufferedReader(reader);
 			final char[] buffer = new char[1024];
 			while (true) {
 				final int count = input.read(buffer);
@@ -156,6 +168,17 @@ public enum FileUtils {
 		return builder.toString();
 	}
 
+	/**
+	 * Read the given stream contents as a string.
+	 * @param stream The <code>InputStream</code>
+	 * to read from.
+	 * @return The <code>String</code> contents.
+	 * @throws IOException If any IO error occurred.
+	 */
+	public String readAsString(final InputStream stream) throws IOException {
+		return this.readAsString(new InputStreamReader(stream));
+	}
+	
 	/**
 	 * Read the given file and parse it into a XML
 	 * document.
