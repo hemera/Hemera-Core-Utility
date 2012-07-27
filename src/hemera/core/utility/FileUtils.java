@@ -265,10 +265,54 @@ public enum FileUtils {
 				}
 				// Only write if doesn't contain.
 				if (!contains) {
-					final File file = FileUtils.instance.writeToFile(jar, entry.getName(), path);
+					final File file = FileUtils.instance.writeToFile(jar, entryName, path);
 					list.add(file);
 				}
 				entry = input.getNextEntry();
+			}
+		} finally {
+			if (input != null) input.close();
+		}
+		if (list.isEmpty()) return null;
+		return list;
+	}
+	
+	/**
+	 * Write all the entries within the specified package
+	 * of the Jar file to the specified directory.
+	 * @param jarFile The <code>File</code> to retrieve
+	 * entries from.
+	 * @param path The <code>String</code> directory
+	 * to write the entries to.
+	 * @param packagePath The <code>String</code> path
+	 * of the package in the format of a/b/c instead of
+	 * a.b.c.
+	 * @return The <code>List</code> of all the entry
+	 * <code>File</code>. <code>null</code> if there
+	 * are none.
+	 * @throws IOException If any file processing failed.
+	 */
+	public List<File> writePackage(final File jarFile, final String path, final String packagePath) throws IOException {
+		final List<File> list = new ArrayList<File>();
+		final JarFile jar = new JarFile(jarFile);
+		// Retrieve all the entries in the resources directory and all of
+		// its sub-directories.
+		// Explicitly use slash here since entry path is platform independent.
+		JarInputStream input = null;
+		try {
+			input = new JarInputStream(new FileInputStream(jarFile));
+			JarEntry entry = input.getNextJarEntry();
+			while (entry != null) {
+				final String entryName = entry.getName();
+				// Entry's name must start with the package path but does not end with
+				// a path separator. Explicitly use slash here since entry path is
+				// platform independent.
+				if (entryName.startsWith(packagePath) && !entryName.endsWith("/")) {
+					// Write the entry to lib directory.
+					final File written = FileUtils.instance.writeToFile(jar, entryName, path);
+					list.add(written);
+				}
+				entry = input.getNextJarEntry();
 			}
 		} finally {
 			if (input != null) input.close();
