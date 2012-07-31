@@ -71,7 +71,7 @@ public enum FileUtils {
 		}
 		return file.delete();
 	}
-	
+
 	/**
 	 * Copy the source file to the target file.
 	 * @param src The source <code>File</code> to copy.
@@ -141,7 +141,7 @@ public enum FileUtils {
 	public String readAsString(final File file) throws IOException {
 		return this.readAsString(new FileReader(file));
 	}
-	
+
 	/**
 	 * Read the contents of the given reader as a string.
 	 * @param reader The <code>Reader</code> to read.
@@ -178,7 +178,7 @@ public enum FileUtils {
 	public String readAsString(final InputStream stream) throws IOException {
 		return this.readAsString(new InputStreamReader(stream));
 	}
-	
+
 	/**
 	 * Read the given file and parse it into a XML
 	 * document.
@@ -276,7 +276,7 @@ public enum FileUtils {
 		if (list.isEmpty()) return null;
 		return list;
 	}
-	
+
 	/**
 	 * Write all the entries within the specified package
 	 * of the Jar file to the specified directory.
@@ -580,7 +580,8 @@ public enum FileUtils {
 
 	/**
 	 * Retrieve all files from the specified directory
-	 * including all sub-directories.
+	 * including all sub-directories but exclude hidden
+	 * files.
 	 * @param rootDir The <code>String</code> directory
 	 * to search from.
 	 * @return The <code>List</code> of all the
@@ -594,7 +595,8 @@ public enum FileUtils {
 	/**
 	 * Retrieve the files that have the file extension
 	 * matching the given one, from the specified
-	 * directory including all sub-directories 
+	 * directory including all sub-directories but
+	 * exclude hidden files.
 	 * @param rootDir The <code>String</code> directory
 	 * to search from.
 	 * @param extension The <code>String</code> file
@@ -614,6 +616,7 @@ public enum FileUtils {
 		final File[] list = root.listFiles();
 		for (int i = 0; i < list.length; i++) {
 			final File file = list[i];
+			if (file.isHidden()) continue;
 			// Recursive.
 			if (file.isDirectory()) {
 				final List<File> results = this.getFiles(file.getAbsolutePath(), extension);
