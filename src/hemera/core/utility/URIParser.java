@@ -32,7 +32,7 @@ public enum URIParser {
 	 */
 	public String parsePath(final String uri) {
 		final int index = uri.indexOf("?");
-		if (index < 0) return uri;
+		if (index < 0) return uri.substring(1);
 		return uri.substring(1, index);
 	}
 	
