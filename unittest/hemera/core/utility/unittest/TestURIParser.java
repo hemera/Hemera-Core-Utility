@@ -54,7 +54,7 @@ public class TestURIParser extends TestCase {
 		final String expected = "/resource/subresource/processor";
 		final String uri = expected + "?arg1=1&arg2=2";
 		final String path = URIParser.instance.parsePath(uri);
-		assertEquals(expected, path);
+		assertEquals(expected.substring(1), path);
 	}
 	
 	public void testPathInvalidArguments() {
