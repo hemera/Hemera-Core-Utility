@@ -11,19 +11,19 @@ import junit.framework.TestCase;
 public class TestURIParser extends TestCase {
 
 	public void testNoArguments() throws Exception {
-		final String uri = "/module/submodule/processor";
+		final String uri = "/resource/subresource/processor";
 		final Map<String, String> arguments = URIParser.instance.parseURIArguments(uri);
 		assertEquals(null, arguments);
 	}
 	
 	public void testInvalidArguments() throws Exception {
-		final String uri = "/module/submodule/processor?";
+		final String uri = "/resource/subresource/processor?";
 		final Map<String, String> arguments = URIParser.instance.parseURIArguments(uri);
 		assertEquals(null, arguments);
 	}
 	
 	public void testHasArguments() throws Exception {
-		String uri = "/module/submodule/processor?";
+		String uri = "/resource/subresource/processor?";
 		final Random random = new Random();
 		final Map<String, String> expected = new HashMap<String, String>();
 		final int count = 17;
@@ -45,20 +45,20 @@ public class TestURIParser extends TestCase {
 	}
 	
 	public void testPathNoArguments() {
-		final String uri = "/module/submodule/processor";
+		final String uri = "/resource/subresource/processor";
 		final String path = URIParser.instance.parsePath(uri);
 		assertEquals(uri, path);
 	}
 	
 	public void testPathWithArguments() {
-		final String expected = "/module/submodule/processor";
+		final String expected = "/resource/subresource/processor";
 		final String uri = expected + "?arg1=1&arg2=2";
 		final String path = URIParser.instance.parsePath(uri);
 		assertEquals(expected, path);
 	}
 	
 	public void testPathInvalidArguments() {
-		final String base = "/module/submodule/processor";
+		final String base = "/resource/subresource/processor";
 		final String uri = base + "arg1=1&arg2=2";
 		final String path = URIParser.instance.parsePath(uri);
 		assertEquals(uri, path);
