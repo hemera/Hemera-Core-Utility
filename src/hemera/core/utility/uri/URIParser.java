@@ -37,18 +37,22 @@ public enum URIParser {
 		final String resource = array[0];
 		long id = Long.MIN_VALUE;
 		String action = null;
-		// Second value may be ID or action.
-		if (array.length == 2) {
-			if (array[1].matches("-?\\d+(\\.\\d+)?")) {
-				id = Long.valueOf(array[1]);
-			} else {
-				action = array[1];
+		// There are ID and/or action.
+		if (array.length >= 2) {
+			// Second value may be ID.
+			final boolean hasID = array[1].matches("-?\\d+(\\.\\d+)?");
+			if (hasID) id = Long.valueOf(array[1]);
+			// The rest will be treated as action.
+			// Starting index is determined if there is an ID.
+			final int start = hasID ? 2 : 1;
+			final StringBuilder builder = new StringBuilder();
+			final int last = array.length - 1;
+			for (int i = start; i < array.length; i++) {
+				builder.append(array[i]);
+				if (i != last) builder.append("/");
 			}
-		}
-		// If there are three values, then second one is ID, last one is action.
-		else if (array.length == 3) {
-			id = Long.valueOf(array[1]);
-			action = array[2];
+			action = builder.toString();
+			if (action.trim().isEmpty()) action = null;
 		}
 		return new RESTURI(resource, id, action);
 	}

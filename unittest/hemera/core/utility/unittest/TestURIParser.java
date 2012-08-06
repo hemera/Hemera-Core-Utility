@@ -68,4 +68,20 @@ public class TestURIParser extends TestCase {
 		assertEquals((long)999, parsed.id);
 		assertEquals(null, parsed.action);
 	}
+	
+	public void testURIIDMultiAction() {
+		final String uri = "/resource/123/action1/action2/action3/";
+		final RESTURI parsed = URIParser.instance.parseURI(uri);
+		assertEquals("resource", parsed.resource);
+		assertEquals((long)123, parsed.id);
+		assertEquals("action1/action2/action3", parsed.action);
+	}
+	
+	public void testURINoIDMultiAction() {
+		final String uri = "/resource/action1/action2/action3/";
+		final RESTURI parsed = URIParser.instance.parseURI(uri);
+		assertEquals("resource", parsed.resource);
+		assertEquals(Long.MIN_VALUE, parsed.id);
+		assertEquals("action1/action2/action3", parsed.action);
+	}
 }
