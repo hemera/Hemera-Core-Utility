@@ -1,6 +1,7 @@
 package hemera.core.utility.unittest;
 
-import hemera.core.utility.URIParser;
+import hemera.core.utility.uri.RESTURI;
+import hemera.core.utility.uri.URIParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,19 +12,19 @@ import junit.framework.TestCase;
 public class TestURIParser extends TestCase {
 
 	public void testNoArguments() throws Exception {
-		final String uri = "/resource/subresource/processor";
+		final String uri = "/resource/123/action";
 		final Map<String, String> arguments = URIParser.instance.parseURIArguments(uri);
 		assertEquals(null, arguments);
 	}
 	
 	public void testInvalidArguments() throws Exception {
-		final String uri = "/resource/subresource/processor?";
+		final String uri = "/resource/123/action?";
 		final Map<String, String> arguments = URIParser.instance.parseURIArguments(uri);
 		assertEquals(null, arguments);
 	}
 	
 	public void testHasArguments() throws Exception {
-		String uri = "/resource/subresource/processor?";
+		String uri = "/resource/123/action?";
 		final Random random = new Random();
 		final Map<String, String> expected = new HashMap<String, String>();
 		final int count = 17;
@@ -44,23 +45,27 @@ public class TestURIParser extends TestCase {
 		}
 	}
 	
-	public void testPathNoArguments() {
-		final String uri = "/resource/subresource/processor";
-		final String path = URIParser.instance.parsePath(uri);
-		assertEquals(uri, path);
+	public void testURIFull() {
+		final String uri = "/resource/123/action";
+		final RESTURI parsed = URIParser.instance.parseURI(uri);
+		assertEquals("resource", parsed.resource);
+		assertEquals((long)123, parsed.id);
+		assertEquals("action", parsed.action);
 	}
 	
-	public void testPathWithArguments() {
-		final String expected = "/resource/subresource/processor";
-		final String uri = expected + "?arg1=1&arg2=2";
-		final String path = URIParser.instance.parsePath(uri);
-		assertEquals(expected.substring(1), path);
+	public void testURIResourceOnly() {
+		final String uri = "/resource/";
+		final RESTURI parsed = URIParser.instance.parseURI(uri);
+		assertEquals("resource", parsed.resource);
+		assertEquals(Long.MIN_VALUE, parsed.id);
+		assertEquals(null, parsed.action);
 	}
 	
-	public void testPathInvalidArguments() {
-		final String base = "/resource/subresource/processor";
-		final String uri = base + "arg1=1&arg2=2";
-		final String path = URIParser.instance.parsePath(uri);
-		assertEquals(uri, path);
+	public void testURIResourceIDOnly() {
+		final String uri = "/resource/999";
+		final RESTURI parsed = URIParser.instance.parseURI(uri);
+		assertEquals("resource", parsed.resource);
+		assertEquals((long)999, parsed.id);
+		assertEquals(null, parsed.action);
 	}
 }

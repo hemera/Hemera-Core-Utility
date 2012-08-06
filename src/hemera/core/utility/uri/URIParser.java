@@ -1,4 +1,4 @@
-package hemera.core.utility;
+package hemera.core.utility.uri;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -21,19 +21,36 @@ public enum URIParser {
 	instance;
 	
 	/**
-	 * Parse out the access path of the given URI.
-	 * @param uri The <code>String</code> URI to be
+	 * Parse the given URI string value into a REST
+	 * URI structure.
+	 * @param value The <code>String</code> URI to be
 	 * parsed. This is not to be confused with an
 	 * URL. It should not contain the domain portion
 	 * of the address, but starts and includes the
 	 * first <code>/</code> of the address.
-	 * @return The <code>String</code> access path
-	 * without any arguments.
+	 * @return The <code>RESTURI</code> instance.
 	 */
-	public String parsePath(final String uri) {
-		final int index = uri.indexOf("?");
-		if (index < 0) return uri.substring(1);
-		return uri.substring(1, index);
+	public RESTURI parseURI(final String value) {
+		final int index = value.indexOf("?");
+		final String uri = (index < 0) ? value.substring(1) : value.substring(1, index);
+		final String[] array = uri.split("/");
+		final String resource = array[0];
+		long id = Long.MIN_VALUE;
+		String action = null;
+		// Second value may be ID or action.
+		if (array.length == 2) {
+			if (array[1].matches("-?\\d+(\\.\\d+)?")) {
+				id = Long.valueOf(array[1]);
+			} else {
+				action = array[1];
+			}
+		}
+		// If there are three values, then second one is ID, last one is action.
+		else if (array.length == 3) {
+			id = Long.valueOf(array[1]);
+			action = array[2];
+		}
+		return new RESTURI(resource, id, action);
 	}
 	
 	/**
@@ -71,7 +88,7 @@ public enum URIParser {
 	 * This method uses the standard separators. Each
 	 * key value pair is in the format of
 	 * <code>key=value</code>, with a separator of the
-	 * <code>=</code> character. All key and valur
+	 * <code>=</code> character. All key and value
 	 * pairs are separated by a single <code>&</code>
 	 * character.
 	 * @param uricontents The <code>String</code> URI
