@@ -3,20 +3,20 @@ package hemera.core.utility.logging;
 import java.io.File;
 
 /**
- * <code>CLogging</code> defines the enumeration of
- * logging related configuration values. All these
+ * <code>LoggingConfig</code> defines the enumeration
+ * of logging related configuration values. All these
  * values can be modified at runtime to adjust system
  * logging behavior.
  * <p>
- * Each <code>CLogging</code> enumeration has a value
- * <code>Object</code> associated with it. This value
- * is of a type that is specific to the usage of the
- * enumeration.
+ * Each <code>LoggingConfig</code> enumeration has a
+ * value <code>Object</code> associated with it. This
+ * value is of a type that is specific to the usage
+ * of the enumeration.
  *
  * @author Yi Wang (Neakor)
  * @version 1.0.0
  */
-public enum CLogging {
+public enum LoggingConfig {
 	/**
 	 * The <code>Boolean</code> value indicating if the
 	 * system logging is enabled.
@@ -24,6 +24,16 @@ public enum CLogging {
 	 * Default value is <code>true</code>.
 	 */
 	Enabled(true),
+	/**
+	 * The <code>Boolean</code> value indicating if the
+	 * file output is enabled. Updating this value after
+	 * the logger is created will not take effect. This
+	 * value should only be set once at application
+	 * initialization time.
+	 * <p>
+	 * Default value is <code>true</code>.
+	 */
+	FileOutputEnabled(true),
 	/**
 	 * The <code>String</code> value indicating the
 	 * logging file directory.
@@ -56,7 +66,7 @@ public enum CLogging {
 	 * Constructor of <code>CLogging</code>.
 	 * @param value The default <code>Object</code> value.
 	 */
-	private CLogging(final Object value) {
+	private LoggingConfig(final Object value) {
 		this.value = value;
 	}
 	

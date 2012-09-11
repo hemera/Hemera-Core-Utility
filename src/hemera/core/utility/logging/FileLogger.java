@@ -24,10 +24,10 @@ import java.util.logging.Logger;
  * <p>
  * <code>FileLogger</code> sets up the instances of
  * <code>Logger</code> based on the configuration in
- * <code>CLogging</code> and provides three-level
+ * <code>LoggingConfig</code> and provides three-level
  * based logging methods. All provided logging methods
- * use <code>CLogging</code> values at runtime for
- * logging invocations.
+ * use <code>LoggingConfig</code> values at runtime
+ * for logging invocations.
  *
  * @author Yi Wang (Neakor)
  * @version 1.0.0
@@ -57,7 +57,10 @@ public final class FileLogger {
 	 */
 	private static final AtomicReference<FileHandler> consoleHandler = new AtomicReference<FileHandler>(null);
 	/**
-	 * The <code>Logger</code> instance.
+	 * The <code>Logger</code> instance. This value may
+	 * be <code>null</code> if the logger is supposed
+	 * to be a no-operation logger when logging is
+	 * disabled.
 	 */
 	private final Logger logger;
 
@@ -77,7 +80,7 @@ public final class FileLogger {
 	 * to be logged.
 	 */
 	public void info(final String message) {
-		final Boolean enabled = (Boolean)CLogging.Enabled.getValue();
+		final Boolean enabled = (Boolean)LoggingConfig.Enabled.getValue();
 		if (!enabled) return;
 		this.logger.info(message);
 	}
@@ -89,7 +92,7 @@ public final class FileLogger {
 	 * to be logged.
 	 */
 	public void warning(final String message) {
-		final Boolean enabled = (Boolean)CLogging.Enabled.getValue();
+		final Boolean enabled = (Boolean)LoggingConfig.Enabled.getValue();
 		if (!enabled) return;
 		this.logger.warning(message);
 	}
@@ -101,7 +104,7 @@ public final class FileLogger {
 	 * to be logged.
 	 */
 	public void severe(final String message) {
-		final Boolean enabled = (Boolean)CLogging.Enabled.getValue();
+		final Boolean enabled = (Boolean)LoggingConfig.Enabled.getValue();
 		if (!enabled) return;
 		this.logger.severe(message);
 	}
@@ -113,7 +116,7 @@ public final class FileLogger {
 	 * be logged.
 	 */
 	public void exception(final Exception exception) {
-		final Boolean enabled = (Boolean)CLogging.Enabled.getValue();
+		final Boolean enabled = (Boolean)LoggingConfig.Enabled.getValue();
 		if (!enabled) return;
 		final StringBuilder builder = new StringBuilder();
 		builder.append(exception.toString()).append("\n");
@@ -174,11 +177,18 @@ public final class FileLogger {
 	/**
 	 * Create a new instance of file logger with given
 	 * class name as the file pattern.
+	 * <p>
+	 * If file output is disabled, a logger without
+	 * file attachment is returned.
 	 * @param classname The <code>String</code> class-
 	 * name of the class that uses the logger.
 	 * @return The <code>FileLogger</code> instance.
 	 */
 	private static FileLogger newFileLogger(final String classname) {
+		// No-op logger.
+		if (!(Boolean)LoggingConfig.FileOutputEnabled.getValue()) {
+			return new FileLogger(Logger.getLogger(classname));
+		}
 		try {
 			// Create file handler using class name.
 			final FileHandler handler = FileLogger.newFileHandler(classname);
@@ -218,13 +228,13 @@ public final class FileLogger {
 	 */
 	private static FileHandler newFileHandler(final String name) throws SecurityException, IOException {
 		// Create a file handler based on logging configuration.
-		final String directory = (String)CLogging.Directory.getValue();
+		final String directory = (String)LoggingConfig.Directory.getValue();
 		final StringBuilder pattern = new StringBuilder();
 		pattern.append(directory);
 		if (!directory.endsWith(File.separator)) pattern.append(File.separator);
 		pattern.append(name).append(".log");
-		final Integer filesize = (Integer)CLogging.FileSize.getValue();
-		final Integer filecount = (Integer)CLogging.FileCount.getValue();
+		final Integer filesize = (Integer)LoggingConfig.FileSize.getValue();
+		final Integer filecount = (Integer)LoggingConfig.FileCount.getValue();
 		final FileHandler handler = new FileHandler(pattern.toString(), filesize, filecount, false);
 		final LoggingFormatter formatter = new LoggingFormatter();
 		handler.setFormatter(formatter);
