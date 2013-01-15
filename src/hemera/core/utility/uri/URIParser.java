@@ -34,27 +34,19 @@ public enum URIParser {
 		final int index = value.indexOf("?");
 		final String uri = (index < 0) ? value.substring(1) : value.substring(1, index);
 		final String[] array = uri.split("/");
+		// First element must be resource.
 		final String resource = array[0];
-		long id = Long.MIN_VALUE;
-		String action = null;
-		// There are ID and/or action.
-		if (array.length >= 2) {
-			// Second value may be ID.
-			final boolean hasID = array[1].matches("-?\\d+(\\.\\d+)?");
-			if (hasID) id = Long.valueOf(array[1]);
-			// The rest will be treated as action.
-			// Starting index is determined if there is an ID.
-			final int start = hasID ? 2 : 1;
-			final StringBuilder builder = new StringBuilder();
-			final int last = array.length - 1;
-			for (int i = start; i < array.length; i++) {
-				builder.append(array[i]);
-				if (i != last) builder.append("/");
+		// Rest are elements.
+		final int count = array.length-1;
+		if (count > 0) {
+			final String[] elements = new String[count];
+			for (int i = 0; i < count; i++) {
+				elements[i] = array[i+1];
 			}
-			action = builder.toString();
-			if (action.trim().isEmpty()) action = null;
+			return new RESTURI(resource, elements);
+		} else {
+			return new RESTURI(resource, null);
 		}
-		return new RESTURI(resource, id, action);
 	}
 	
 	/**
