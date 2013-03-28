@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  * for logging invocations.
  *
  * @author Yi Wang (Neakor)
- * @version 1.0.0
+ * @version 1.0.1
  */
 public final class FileLogger {
 	/**
