@@ -74,8 +74,7 @@ public final class FileLogger {
 	}
 
 	/**
-	 * Log an info level message, if logging is enabled
-	 * at <code>CLogging.Enabled</code>.
+	 * Log an info level message, if logging is enabled.
 	 * @param message The <code>String</code> message
 	 * to be logged.
 	 */
@@ -84,22 +83,9 @@ public final class FileLogger {
 		if (!enabled) return;
 		this.logger.info(message);
 	}
-
+	
 	/**
-	 * Log a warning level message, if logging is enabled
-	 * at <code>CLogging.Enabled</code>.
-	 * @param message The <code>String</code> message
-	 * to be logged.
-	 */
-	public void warning(final String message) {
-		final Boolean enabled = (Boolean)LoggingConfig.Enabled.getValue();
-		if (!enabled) return;
-		this.logger.warning(message);
-	}
-
-	/**
-	 * Log a severe level message, if logging is enabled
-	 * at <code>CLogging.Enabled</code>.
+	 * Log a severe level message, if logging is enabled.
 	 * @param message The <code>String</code> message
 	 * to be logged.
 	 */
@@ -108,10 +94,20 @@ public final class FileLogger {
 		if (!enabled) return;
 		this.logger.severe(message);
 	}
-
+	
 	/**
-	 * Log the given exception, if logging is enabled
-	 * at <code>CLogging.Enabled</code>.
+	 * Log a warning level message, if logging is enabled.
+	 * @param message The <code>String</code> message
+	 * to be logged.
+	 */
+	public void warning(final String message) {
+		final Boolean enabled = (Boolean)LoggingConfig.Enabled.getValue();
+		if (!enabled) return;
+		this.logger.warning(message);
+	}
+	
+	/**
+	 * Log the given exception, if logging is enabled.
 	 * @param exception The <code>Exception</code> to
 	 * be logged.
 	 */
@@ -120,12 +116,26 @@ public final class FileLogger {
 		if (!enabled) return;
 		final StringBuilder builder = new StringBuilder();
 		builder.append(exception.toString()).append("\n");
-		for(StackTraceElement e : exception.getStackTrace()) {
-			builder.append("		at ").append(e.toString()).append("\n");
-		}
+		final String stacktrace = FileLogger.buildStacktrace(exception.getStackTrace());
+		builder.append(stacktrace);
 		this.logger.severe(builder.toString());
 	}
 
+	/**
+	 * Build the stack trace string with given elements.
+	 * @param elements The array of <code>StackTraceElement</code>.
+	 * @return The <code>String</code> stack trace.
+	 */
+	public static String buildStacktrace(final StackTraceElement[] elements) {
+		final StringBuilder builder = new StringBuilder();
+		final int length = elements.length;
+		for (int i = 0; i < length; i++) {
+			final StackTraceElement element = elements[i];
+			builder.append("		at ").append(element.toString()).append("\n");
+		}
+		return builder.toString();
+	}
+	
 	/**
 	 * Retrieve a logger instance for the given class.
 	 * <p>
