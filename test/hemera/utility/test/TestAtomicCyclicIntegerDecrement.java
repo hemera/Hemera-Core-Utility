@@ -25,7 +25,7 @@ public class TestAtomicCyclicIntegerDecrement {
 				public void run() {
 					try {
 						startlatch.await();
-						final int v = value.getAndDecrement();
+						final int v = value.decrementAndGet();
 						if (v == 0) count0.incrementAndGet();
 						else if (v == 1) count1.incrementAndGet();
 						else if (v == 2) count2.incrementAndGet();

@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * the defined minimum.
  *
  * @author Yi Wang (Neakor)
- * @version 1.0.0
+ * @version 1.0.2
  */
 public class AtomicCyclicInteger {
 	/**
@@ -44,38 +44,40 @@ public class AtomicCyclicInteger {
 	}
 	
 	/**
-	 * Retrieve the current value and increment the
-	 * value by 1 atomically. If the current value
-	 * is the maximum, after this operation, the value
-	 * will be at the minimum.
-	 * @return The <code>int</code> current value
-	 * before the increment.
+	 * Increment the current value and retrieve the
+	 * modified value, if it's in range. If the new
+	 * value is greater than the maximum value, the
+	 * value is set to the minimum value and the next
+	 * increment is returned.
+	 * @return The <code>int</code> value after the
+	 * increment.
 	 */
-	public int getAndIncrement() {
-		final int oldvalue = this.value.getAndIncrement();
-		if (oldvalue > this.max) {
+	public int incrementAndGet() {
+		final int value = this.value.incrementAndGet();
+		if (value > this.max) {
 			this.value.set(this.min);
-			return this.getAndIncrement();
+			return this.min;
 		} else {
-			return oldvalue;
+			return value;
 		}
 	}
 	
 	/**
-	 * Retrieve the current value and decrement the
-	 * value by 1 atomically. If the current value
-	 * is the minimum, after this operation, the value
-	 * will be at the maximum.
-	 * @return The <code>int</code> current value
-	 * before the decrement.
+	 * Decrement the current value and retrieve the
+	 * modified value, if it's in range. If the new
+	 * value is less than the minimum value, the value
+	 * is set to the maximum value and the next
+	 * decrement is returned.
+	 * @return The <code>int</code> value after the
+	 * decrement.
 	 */
-	public int getAndDecrement() {
-		final int oldvalue = this.value.getAndDecrement();
-		if (oldvalue < this.min) {
+	public int decrementAndGet() {
+		final int value = this.value.decrementAndGet();
+		if (value < this.min) {
 			this.value.set(this.max);
-			return this.getAndDecrement();
+			return this.max;
 		} else {
-			return oldvalue;
+			return value;
 		}
 	}
 	
