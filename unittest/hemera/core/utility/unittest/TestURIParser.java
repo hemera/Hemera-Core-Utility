@@ -3,13 +3,14 @@ package hemera.core.utility.unittest;
 import hemera.core.utility.uri.RESTURI;
 import hemera.core.utility.uri.URIParser;
 
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 import junit.framework.TestCase;
 
 public class TestURIParser extends TestCase {
 
-	public void testURIFull() {
+	public void testURIFull() throws UnsupportedEncodingException {
 		final String id = UUID.randomUUID().toString().replace("-", "");
 		final String uri = "/resource/"+id+"/action";
 		final RESTURI parsed = URIParser.instance.parseURI(uri);
@@ -18,14 +19,14 @@ public class TestURIParser extends TestCase {
 		assertEquals("action", parsed.elements[1]);
 	}
 	
-	public void testURIResourceOnly() {
+	public void testURIResourceOnly() throws UnsupportedEncodingException {
 		final String uri = "/resource/";
 		final RESTURI parsed = URIParser.instance.parseURI(uri);
 		assertEquals("resource", parsed.resource);
 		assertEquals(null, parsed.elements);
 	}
 	
-	public void testURIResourceIDOnly() {
+	public void testURIResourceIDOnly() throws UnsupportedEncodingException {
 		final String id = UUID.randomUUID().toString().replace("-", "");
 		final String uri = "/resource/"+id;
 		final RESTURI parsed = URIParser.instance.parseURI(uri);
@@ -34,7 +35,7 @@ public class TestURIParser extends TestCase {
 		assertEquals(id, parsed.elements[0]);
 	}
 	
-	public void testURIIDMultiAction() {
+	public void testURIIDMultiAction() throws UnsupportedEncodingException {
 		final String id = UUID.randomUUID().toString().replace("-", "");
 		final String uri = "/resource/"+id+"/action1/action2/action3/";
 		final RESTURI parsed = URIParser.instance.parseURI(uri);
@@ -45,7 +46,7 @@ public class TestURIParser extends TestCase {
 		assertEquals("action3", parsed.elements[3]);
 	}
 	
-	public void testURINoIDMultiAction() {
+	public void testURINoIDMultiAction() throws UnsupportedEncodingException {
 		final String uri = "/resource/action1/action2/action3/";
 		final RESTURI parsed = URIParser.instance.parseURI(uri);
 		assertEquals("resource", parsed.resource);
